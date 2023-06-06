@@ -1,33 +1,13 @@
-const http = require('http');
+const express = require("express");
 
-const app = http.createServer((request, response) => {
-    console.log( request.method, request.url );
-    const users = [
-        {
-            id: 1,
-            name: 'Lucas',
-        },
-        {
-            id: 2,
-            name: 'Souza',
-        },
-        {
-            id: 3,
-            name: 'Pereira'
-        }
-    ];
+const app = express()
+app.use(express.json());
 
-
-    if (request.method === 'GET' && request.url === '/'){
-        response.writeHead(200, {'Content-Type' : 'application/json'})
-        response.end(JSON.stringify(users));
-        
-
-    }   else{
-        response.writeHead(404, { "Content-Type" : 'text/plain' });
-        response.end(`Cannot ${request.method} ${request.url}`)
-    }
-
+app.get('/', (request, response) => {
+    console.log(request.method);
+    response.status(200).json({
+        message: 'First aplication'
+    });
 });
 
-app.listen(3000, () => console.log('Server is running'))
+app.listen(3333, () => console.log('Server is running'))
