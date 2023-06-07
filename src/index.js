@@ -1,13 +1,13 @@
 const express = require("express");
 const { v4: uuid } = require("uuid");
+
 const app = express();
 app.use(express.json());
 
-<<<<<<< HEAD
 const users = []
 const books = []
 
-app.post('/users', (request, response) => {
+app.post('/users', ( request, response ) => {
     const { name, email } = request.body;
 
     const emailAlreadyExists = users.some( (user) => user.email === email )
@@ -23,7 +23,7 @@ app.post('/users', (request, response) => {
 
 });
 
-app.get('/getUsers', (request, response) => {
+app.get('/getUsers', ( request, response ) => {
     return response.status(200).json(users)
 });
 
@@ -40,24 +40,21 @@ app.post('/books', ( request, response ) => {
     });
 
     return response.status(201).json({ message: 'OK' })
-=======
-const users = [];
-
-app.post("/users", (request, response) => {
-  const { name, email } = request.body;
-
-  const emailAlreadyExists = users.some((user) => user.email === email);
-  if (emailAlreadyExists) {
-    return response.status(400).json({ error: "User already exists." });
-  }
-  users.push({
-    name,
-    email,
-    id: uuid(),
-  });
-  return response.status(201).json({ message: "Ok" });
->>>>>>> f0f7f71b104ce662407bd4ac7b8226561dab14e6
 });
+
+app.put('/users/:id', ( request, response ) => {
+    const { id } = request.params
+    // console.log(id)
+    const { name } = request.body;
+
+    const findUser = users.find( user => user.id === id )
+
+
+    findUser.name = name
+    return response.json(users);
+})
+
+
 
 app.listen(3333, () => console.log("Server is running"));
 
