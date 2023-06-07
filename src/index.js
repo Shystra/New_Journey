@@ -3,12 +3,16 @@ const  { v4: uuid } = require('uuid');
 const app = express()
 app.use(express.json());
 
-const user = []
+const users = []
 
 app.post('/users', (request, response) => {
     const { name, email } = request.body;
 
-    user.push({
+    const emailAlreadyExists = users.some( (user) => user.email === email )
+    if(emailAlreadyExists){
+        return response.status(400).json({error: 'User already exists.'})
+    }
+    users.push({
         name,
         email, 
         id: uuid(),
