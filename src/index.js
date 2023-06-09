@@ -24,7 +24,6 @@ function verifyUser ( request, response, next ){
     
 };
 
-
 // __________________________________________________  \\
 
 
@@ -130,15 +129,6 @@ app.delete('books/:id', ( request, response ) => {
 
 
 });
-
-
-
-
-
-
-
-
-
 
 
 
