@@ -4,6 +4,37 @@ const { v4: uuid } = require("uuid");
 const app = express();
 app.use(express.json());
 
+
+
+
+
+// __________________________________________________  \\
+
+function verifyUser ( request, response, next ){
+    const { email } = request.headers;
+
+    const alreadyExistsEmail = users.find ((user) => user.email === email);
+    if(!alreadyExistsEmail){
+        return response.status(400).json({ error: 'User not found' });
+    }
+
+    request.user = alreadyExistsEmail;
+    return next()
+
+    
+};
+
+
+// __________________________________________________  \\
+
+
+
+
+
+
+
+
+
 const users = []
 const books = []
 
@@ -65,7 +96,7 @@ app.put('/users/:id', ( request, response ) => {
 })
 
 
-app.get('/books/:id', (request, response) => {
+app.get('/books/:id', ( request, response ) => {
     const { id } = request.params;
 
     const findBook = books.filter(book => {
@@ -73,6 +104,38 @@ app.get('/books/:id', (request, response) => {
     });
     return response.json(findBook)
 });
+
+app.delete('/users/:id', verifyUser, ( request, response ) => {
+    const { id } = request.params
+
+    const userIndex = users.findIndex((user) => user.id === id)
+    if (!userIndex < 0){
+        return response.status(400).json('User not found')
+    };
+
+    users.splice( userIndex, 1 )
+    return response.json(users)
+});
+
+app.delete('books/:id', ( request, response ) => {
+    const { id } = request.params;
+
+    const book = books.findIndex((book) => book.id === id);
+    if(!book < 0){
+        return response.status(400).json('Book not found')
+    }
+
+    books.splice( book, 1 )
+    return response.json(books)
+
+
+});
+
+
+
+
+
+
 
 
 
